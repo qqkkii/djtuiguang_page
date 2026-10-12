@@ -81,7 +81,9 @@
       overflow: hidden;
       border-radius: 12px;
       background-color: #26a5e4;
-      padding: 11px;
+      min-height: 78px;
+      box-sizing: border-box;
+      padding: 16px 14px;
       margin-bottom: 10px;
       display: flex;
       align-items: center;
@@ -90,7 +92,7 @@
       color: inherit;
     }
 
-    /* 静态渐变只绘制一次；交互时通过 transform 旋转独立图层。 */
+    /* 跑马灯边框持续旋转，降低视觉负担时由系统设置自动停用。 */
     .card::before {
       content: '';
       position: absolute;
@@ -102,6 +104,7 @@
       transform: translate(-50%, -50%);
       pointer-events: none;
       z-index: -2;
+      animation: rainbow-border-spin 3s linear infinite;
     }
 
     .card::after {
@@ -120,15 +123,9 @@
       }
     }
 
-    @media (prefers-reduced-motion: no-preference) {
-      .card-link:focus-visible .card::before {
-        animation: rainbow-border-spin 3s linear infinite;
-      }
-    }
-
-    @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-      .card-link:hover .card::before {
-        animation: rainbow-border-spin 3s linear infinite;
+    @media (prefers-reduced-motion: reduce) {
+      .card::before {
+        animation: none;
       }
     }
 
@@ -145,7 +142,8 @@
       flex-grow: 1;
       margin-left: 15px;
       margin-right: 15px;
-      font-size: 16px;
+      font-size: 18px;
+      line-height: 1.5;
     }
 
     .card-arrow {
@@ -282,7 +280,7 @@
     <div class="middle-section">
       <a href="https://3z9fk.com" class="card-link">
         <div class="card">
-          <div class="card-text">黄果AI短剧海量剧集持续上新</div>
+          <div class="card-text">🔥 黄果AI短剧 🔥 持续上新</div>
           <div class="card-arrow"></div>
         </div>
       </a>
@@ -294,7 +292,7 @@
       </a>
       <a href="https://3f5rw.com" class="card-link">
         <div class="card">
-          <div class="card-text"> 禁忌、诱惑、沉沦、反转尽在91短剧</div>
+          <div class="card-text"> 禁忌、诱惑、沉沦、反转尽在 ❤️ 91短剧 ❤️</div>
           <div class="card-arrow"></div>
         </div>
       </a>
