@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>精品资源收藏保存</title>
+  <link rel="preload" as="image" href="./imgs/bg-mobile.webp" type="image/webp" media="(max-width: 600px)" fetchpriority="high">
+  <link rel="preload" as="image" href="./imgs/bg-optimized.webp" type="image/webp" media="(min-width: 601px)" fetchpriority="high">
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      font-family: sans-serif;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background-color: #173749;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.349), rgba(0, 0, 0, 0.349)), url('./imgs/bg.jpeg');
+      background-image: linear-gradient(rgba(0, 0, 0, 0.349), rgba(0, 0, 0, 0.349)), image-set(url('./imgs/bg-optimized.webp') type('image/webp'), url('./imgs/bg.jpeg') type('image/jpeg'));
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.349), rgba(0, 0, 0, 0.349)), image-set(url('./imgs/bg-mobile.webp') type('image/webp'), url('./imgs/bg.jpeg') type('image/jpeg'));
+      }
+    }
+
+    .top-section {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo {
+      display: block;
+      width: 90px;
+      height: 90px;
+      border-radius: 15px;
+    }
+
+    .title-large {
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .title-small {
+      font-size: 16px;
+      color: rgb(226, 223, 223);
+      margin-top: 5px;
+      text-align: center;
+    }
+
+    .middle-section {
+      margin-top: 20px;
+      margin-bottom: 24px;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .card {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      border-radius: 12px;
+      background-color: #26a5e4;
+      padding: 11px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* 静态渐变只绘制一次；交互时通过 transform 旋转独立图层。 */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 150%;
+      aspect-ratio: 1;
+      background: conic-gradient(#ff0000, #ffdd00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 9px;
+      background: #d3d3d3;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @keyframes rainbow-border-spin {
+      to {
+        transform: translate(-50%, -50%) rotate(1turn);
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .card-link:focus-visible .card::before {
+        animation: rainbow-border-spin 3s linear infinite;
+      }
+    }
+
+    @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+      .card-link:hover .card::before {
+        animation: rainbow-border-spin 3s linear infinite;
+      }
+    }
+
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .card-text {
+      flex-grow: 1;
+      margin-left: 15px;
+      margin-right: 15px;
+      font-size: 16px;
+    }
+
+    .card-arrow {
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 8px solid #555;
+    }
+
+    .bottom-section {
+      margin-top: auto;
+      width: 100%;
+      min-height: 100px;
+      flex-shrink: 0;
+      background-color: rgba(128, 128, 128, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .overlay {
+      display: flex;
+      gap: 15px;
+    }
+
+    .link-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #333;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .link-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    #bookmark-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: none;
+      /* Initially hidden */
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      cursor: pointer;
+    }
+
+    .bookmark-popup {
+      box-sizing: border-box;
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      width: 90%;
+      max-width: 350px;
+      cursor: default;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      text-align: left;
+    }
+
+    .bookmark-header {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .bookmark-content p {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    .bookmark-content .inline-icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin: 0 5px;
+      vertical-align: middle;
+    }
+
+    .bookmark-content hr {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 15px 0;
+    }
+
+    .bookmark-footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+    }
+  </style>
+  <script>
+    function bookmarkPage() {
+      // Simple check for mobile devices based on user agent
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        // On mobile, show the guide overlay
+        const overlay = document.getElementById('bookmark-overlay');
+        if (overlay) {
+          overlay.style.display = 'flex';
+        }
+      } else {
+        // On PC, show the keyboard shortcut alert
+        const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+        const shortcut = isMac ? 'Cmd/⌘ + D' : 'Ctrl + D';
+        alert('按下 ' + shortcut + ' 收藏本页');
+      }
+    }
+
+    function hideBookmarkOverlay() {
+      const overlay = document.getElementById('bookmark-overlay');
+      if (overlay) {
+        overlay.style.display = 'none';
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="top-section">
+      <img src="./imgs/logo.jpeg" alt="Logo" class="logo" onclick="bookmarkPage()" title="点击收藏本页">
+      <div class="title-large">精品资源尽在其中</div>
+      <div class="title-small">收录全网最新、最全资源</div>
+    </div>
+    <div class="middle-section">
+      <a href="https://3z9fk.com" class="card-link">
+        <div class="card">
+          <div class="card-text">海量高清成人AI短剧与二次元漫剧持续上新</div>
+          <div class="card-arrow"></div>
+        </div>
+      </a>
+      <a href="https://5kx8c.com" class="card-link">
+        <div class="card">
+          <div class="card-text">反差母婊、稀缺资源点这里</div>
+          <div class="card-arrow"></div>
+        </div>
+      </a>
+      <a href="https://5kx8c.com" class="card-link">
+        <div class="card">
+          <div class="card-text"> 禁忌、诱惑、沉沦、反转尽在91短剧</div>
+          <div class="card-arrow"></div>
+        </div>
+      </a>
+      <a href="https://3a5zh.com" class="card-link">
+        <div class="card">
+          <div class="card-text">91大神、国产原创</div>
+          <div class="card-arrow"></div>
+        </div>
+      </a>
+      <a href="https://vw7ky.com" class="card-link">
+        <div class="card">
+          <div class="card-text">暗网流出、独家原创来这里</div>
+          <div class="card-arrow"></div>
+        </div>
+      </a>
+      <a href="https://7xca2.com" class="card-link">
+        <div class="card">
+          <div class="card-text">萝莉、小🐎拉大车看这里 </div>
+          <div class="card-arrow"></div>
+        </div>
+      </a>
+    </div>
+    <div class="bottom-section">
+      <div class="overlay">
+        <a href="https://t.me/soso?start=a_8738468148" class="link-button">
+          <svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="12" fill="#26A5E4" />
+            <path fill="#fff" d="M5.49 11.9c3.5-1.52 5.84-2.53 7-3.02 3.34-1.39 4.03-1.63 4.49-1.64.1 0 .32.02.47.14.12.1.16.24.18.34.02.1.04.32.02.49-.18 1.9-.96 6.51-1.35 8.63-.17.9-.5 1.2-.82 1.23-.7.06-1.24-.46-1.92-.9-1.07-.7-1.68-1.14-2.72-1.82-1.2-.79-.42-1.22.26-1.93.18-.18 3.31-3.04 3.37-3.3.01-.03.02-.15-.06-.21-.07-.06-.17-.04-.24-.02-.1.02-1.83 1.17-5.17 3.43-.49.34-.93.51-1.33.5-.44-.01-1.28-.25-1.9-.45-.76-.25-1.36-.38-1.3-.81.04-.23.37-.45 1.02-.66z" />
+          </svg>
+          <span>电报资源</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div id="bookmark-overlay" onclick="hideBookmarkOverlay()">
+    <div class="bookmark-popup">
+      <div class="bookmark-header">如何收藏/添加到主屏幕</div>
+      <div class="bookmark-content">
+        <p><strong>苹果 iOS (Safari):</strong></p>
+        <p>点击底部菜单栏的 <svg class="inline-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15V3m-4 4 4-4 4 4M8 11H5v10h14V11h-3" /></svg> "分享" 按钮，然后选择 "添加到主屏幕"。</p>
+        <hr>
+        <p><strong>安卓 (Chrome):</strong></p>
+        <p>点击右上角的 <svg class="inline-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><circle cx="12" cy="5" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="12" cy="19" r="2" /></svg> "菜单" 按钮，然后选择 "添加到主屏幕"。</p>
+      </div>
+      <div class="bookmark-footer">点击任意位置关闭</div>
+    </div>
+  </div>
+</body>
+
+</html>
