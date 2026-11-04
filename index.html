@@ -1,323 +1,241 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>精品资源收藏保存</title>
-  <link rel="preload" as="image" href="./imgs/bg-mobile.webp" type="image/webp" media="(max-width: 600px)" fetchpriority="high">
-  <link rel="preload" as="image" href="./imgs/bg-optimized.webp" type="image/webp" media="(min-width: 601px)" fetchpriority="high">
-  <style>
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      min-height: 100%;
-      overflow-x: hidden;
-      overflow-y: auto;
-      font-family: sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>精选导航</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #140d1b;
+  --card: #241629;
+  --border: #4c2b4c;
+  --text: #fffaf2;
+  --sub: #e0d8e5;
+  --accent: #ffe6ad;
+  --accent-strong: #fff7eb;
+  --highlight: #ffe082;
+  --soft: #39203d;
+  --border-accent: #a9517e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #32162e, var(--bg) 480px);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 12px; }
 
-    .container {
-      position: relative;
-      width: 100%;
-      min-height: 100vh;
-      background-color: #173749;
-      background-image: linear-gradient(rgba(0, 0, 0, 0.349), rgba(0, 0, 0, 0.349)), url('./imgs/bg.jpeg');
-      background-image: linear-gradient(rgba(0, 0, 0, 0.349), rgba(0, 0, 0, 0.349)), image-set(url('./imgs/bg-optimized.webp') type('image/webp'), url('./imgs/bg.jpeg') type('image/jpeg'));
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+.notice {
+  background: linear-gradient(90deg, #382039, #27172f);
+  border: 1px solid var(--border);
+  color: var(--accent-strong);
+  text-align: center;
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
 
-    @media (max-width: 600px) {
-      .container {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.349), rgba(0, 0, 0, 0.349)), image-set(url('./imgs/bg-mobile.webp') type('image/webp'), url('./imgs/bg.jpeg') type('image/jpeg'));
-      }
-    }
+.header { text-align: center; margin-bottom: 16px; }
+.header h1 { font-size: 22px; letter-spacing: 1px; color: var(--accent-strong); }
+.header p { color: var(--sub); font-size: 12px; }
 
-    .top-section {
-      margin-top: 32px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 16px 0 8px;
+  color: var(--accent);
+}
 
-    .logo {
-      display: block;
-      width: 90px;
-      height: 90px;
-      border-radius: 15px;
-    }
+/* 主推：一行1个 */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.main-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--accent-strong);
+  text-align: center;
+  padding: 14px 8px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  display: block;
+}
+/* 重点推荐：酒红紫底色搭配亮金色文字，增强明暗与色相对比 */
+.main-btn.highlight {
+  border: 1px solid var(--border-accent);
+  background: linear-gradient(180deg, #49223a, #2c1830);
+  box-shadow: 0 3px 16px rgba(217, 63, 139, 0.18);
+  color: var(--highlight);
+}
 
-    .title-large {
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
-      margin-top: 10px;
-      text-align: center;
-    }
+/* 次推：一行2个 */
+.sub-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.sub-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--accent-strong);
+  text-align: center;
+  padding: 12px 6px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+}
 
-    .title-small {
-      font-size: 16px;
-      color: rgb(226, 223, 223);
-      margin-top: 5px;
-      text-align: center;
-    }
+/* 其他：紧凑 */
+.other-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.other-btn {
+  background: #1e1325;
+  border: 1px solid var(--border);
+  color: var(--accent-strong);
+  text-align: center;
+  padding: 8px 4px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 12px;
+  display: block;
+}
 
-    .middle-section {
-      margin-top: 20px;
-      width: 90%;
-      max-width: 400px;
-    }
+.main-btn:hover, .sub-btn:hover, .other-btn:hover {
+  background: var(--soft);
+  border-color: var(--border-accent);
+}
+.main-btn:focus-visible, .sub-btn:focus-visible, .other-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
-    .card {
-      position: relative;
-      isolation: isolate;
-      overflow: hidden;
-      border-radius: 12px;
-      background-color: #26a5e4;
-      min-height: 78px;
-      box-sizing: border-box;
-      padding: 16px 14px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      text-decoration: none;
-      color: inherit;
-    }
+/* 白色文案按钮：柔光、扫光和角落星芒 */
+.bling {
+  --bling-delay: 0s;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  animation: bling-glow 4.8s ease-in-out infinite;
+  animation-delay: var(--bling-delay);
+}
+.bling:nth-child(3n + 2) { --bling-delay: -1.6s; }
+.bling:nth-child(3n) { --bling-delay: -3.2s; }
+.bling::before, .bling::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  animation-delay: var(--bling-delay);
+}
+.bling::before {
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.05) 43%, rgba(255, 240, 252, 0.16) 50%, transparent 65%);
+  transform: translateX(-110%);
+  animation: bling-sweep 4.8s ease-in-out infinite;
+  animation-delay: var(--bling-delay);
+}
+.bling::after {
+  top: 5px;
+  right: 7px;
+  width: 9px;
+  height: 9px;
+  background: #fff6dd;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  opacity: 0;
+  animation: bling-sparkle 4.8s ease-in-out infinite;
+  animation-delay: var(--bling-delay);
+}
+@keyframes bling-glow {
+  0%, 100% { text-shadow: 0 0 2px rgba(255, 247, 235, 0.15); }
+  45%, 55% { text-shadow: 0 0 5px rgba(255, 247, 235, 0.5), 0 0 12px rgba(243, 168, 221, 0.3); }
+}
+@keyframes bling-sweep {
+  0%, 15% { transform: translateX(-110%); }
+  55%, 100% { transform: translateX(110%); }
+}
+@keyframes bling-sparkle {
+  0%, 25%, 75%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  50% { opacity: 0.95; transform: scale(1) rotate(90deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bling { animation: none; text-shadow: none; }
+  .bling::before, .bling::after { animation: none; display: none; }
+}
 
-    /* 跑马灯边框持续旋转，降低视觉负担时由系统设置自动停用。 */
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 150%;
-      aspect-ratio: 1;
-      background: conic-gradient(#ff0000, #ffdd00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: -2;
-      animation: rainbow-border-spin 3s linear infinite;
-    }
-
-    .card::after {
-      content: '';
-      position: absolute;
-      inset: 3px;
-      border-radius: 9px;
-      background: #d3d3d3;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    @keyframes rainbow-border-spin {
-      to {
-        transform: translate(-50%, -50%) rotate(1turn);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .card::before {
-        animation: none;
-      }
-    }
-
-    .card-link {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .card-link:last-child .card {
-      margin-bottom: 0;
-    }
-
-    .card-text {
-      flex-grow: 1;
-      margin-left: 15px;
-      margin-right: 15px;
-      font-size: 18px;
-      line-height: 1.5;
-    }
-
-    .card-arrow {
-      width: 0;
-      height: 0;
-      border-top: 8px solid transparent;
-      border-bottom: 8px solid transparent;
-      border-left: 8px solid #555;
-    }
-
-    .telegram-resource {
-      margin-top: 32px;
-      margin-bottom: 40px;
-    }
-
-    .link-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background-color: rgba(255, 255, 255, 0.9);
-      color: #333;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    .link-icon {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-    }
-
-    #bookmark-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      display: none;
-      /* Initially hidden */
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      cursor: pointer;
-    }
-
-    .bookmark-popup {
-      box-sizing: border-box;
-      background-color: white;
-      border-radius: 10px;
-      padding: 20px;
-      width: 90%;
-      max-width: 350px;
-      cursor: default;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-      text-align: left;
-    }
-
-    .bookmark-header {
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    .bookmark-content p {
-      margin: 10px 0;
-      line-height: 1.6;
-    }
-
-    .bookmark-content .inline-icon {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin: 0 5px;
-      vertical-align: middle;
-    }
-
-    .bookmark-content hr {
-      border: none;
-      border-top: 1px solid #eee;
-      margin: 15px 0;
-    }
-
-    .bookmark-footer {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #888;
-      text-align: center;
-    }
-  </style>
-  <script>
-    function bookmarkPage() {
-      // Simple check for mobile devices based on user agent
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-      if (isMobile) {
-        // On mobile, show the guide overlay
-        const overlay = document.getElementById('bookmark-overlay');
-        if (overlay) {
-          overlay.style.display = 'flex';
-        }
-      } else {
-        // On PC, show the keyboard shortcut alert
-        const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-        const shortcut = isMac ? 'Cmd/⌘ + D' : 'Ctrl + D';
-        alert('按下 ' + shortcut + ' 收藏本页');
-      }
-    }
-
-    function hideBookmarkOverlay() {
-      const overlay = document.getElementById('bookmark-overlay');
-      if (overlay) {
-        overlay.style.display = 'none';
-      }
-    }
-  </script>
+/* 电脑端适配 */
+@media (min-width: 768px) {
+  .main-grid { grid-template-columns: repeat(2, 1fr); }
+  .sub-grid { grid-template-columns: repeat(4, 1fr); }
+  .other-grid { grid-template-columns: repeat(5, 1fr); }
+  .container { padding: 20px; }
+}
+</style>
 </head>
-
 <body>
-  <div class="container">
-    <div class="top-section">
-      <picture>
-        <source srcset="./imgs/logo-180.webp" type="image/webp">
-        <img src="./imgs/logo.jpeg" alt="Logo" class="logo" width="90" height="90" decoding="async" onclick="bookmarkPage()" title="点击收藏本页">
-      </picture>
-      <div class="title-large">精品资源尽在其中</div>
-      <div class="title-small">收录全网最新、最全资源</div>
-    </div>
-    <div class="middle-section">
-      <a href="https://r4t3x.com" class="card-link">
-        <div class="card">
-          <div class="card-text">🔥 黄果AI短剧 🔥 持续上新</div>
-          <div class="card-arrow"></div>
-        </div>
-      </a>
-      <a href="https://5kx8c.com" class="card-link">
-        <div class="card">
-          <div class="card-text">反差母婊、稀缺资源点这里</div>
-          <div class="card-arrow"></div>
-        </div>
-      </a>
-      <a href="https://3f5rw.com" class="card-link">
-        <div class="card">
-          <div class="card-text"> 禁忌、诱惑、沉沦、反转尽在 ❤️ 91短剧 ❤️</div>
-          <div class="card-arrow"></div>
-        </div>
-      </a>
-    </div>
-    <a href="https://t.me/soso?start=a_8738468148" class="link-button telegram-resource">
-      <svg class="link-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <circle cx="12" cy="12" r="12" fill="#26A5E4" />
-        <path fill="#fff" d="M5.49 11.9c3.5-1.52 5.84-2.53 7-3.02 3.34-1.39 4.03-1.63 4.49-1.64.1 0 .32.02.47.14.12.1.16.24.18.34.02.1.04.32.02.49-.18 1.9-.96 6.51-1.35 8.63-.17.9-.5 1.2-.82 1.23-.7.06-1.24-.46-1.92-.9-1.07-.7-1.68-1.14-2.72-1.82-1.2-.79-.42-1.22.26-1.93.18-.18 3.31-3.04 3.37-3.3.01-.03.02-.15-.06-.21-.07-.06-.17-.04-.24-.02-.1.02-1.83 1.17-5.17 3.43-.49.34-.93.51-1.33.5-.44-.01-1.28-.25-1.9-.45-.76-.25-1.36-.38-1.3-.81.04-.23.37-.45 1.02-.66z" />
-      </svg>
-      <span>电报资源</span>
-    </a>
-  </div>
-  <div id="bookmark-overlay" onclick="hideBookmarkOverlay()">
-    <div class="bookmark-popup">
-      <div class="bookmark-header">如何收藏/添加到主屏幕</div>
-      <div class="bookmark-content">
-        <p><strong>苹果 iOS (Safari):</strong></p>
-        <p>点击底部菜单栏的 <svg class="inline-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 15V3m-4 4 4-4 4 4M8 11H5v10h14V11h-3" /></svg> "分享" 按钮，然后选择 "添加到主屏幕"。</p>
-        <hr>
-        <p><strong>安卓 (Chrome):</strong></p>
-        <p>点击右上角的 <svg class="inline-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><circle cx="12" cy="5" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="12" cy="19" r="2" /></svg> "菜单" 按钮，然后选择 "添加到主屏幕"。</p>
-      </div>
-      <div class="bookmark-footer">点击任意位置关闭</div>
-    </div>
-  </div>
-</body>
+<div class="container">
+  <div class="notice">公告：部分应用需科学上网使用，请注意辨别真伪，谨防钓鱼链接</div>
 
+  <div class="header">
+    <h1>精选导航</h1>
+    <p>优质资源推荐</p>
+  </div>
+
+  <div class="section-title">主推</div>
+  <div class="main-grid" id="main"></div>
+
+  <div class="section-title">次推</div>
+  <div class="sub-grid" id="sub"></div>
+
+  <div class="section-title">其他推荐</div>
+  <div class="other-grid" id="other"></div>
+</div>
+
+<script>
+const products = [
+  // 主推（5个）- 第2、3个高亮（亮金色字体）
+  { tier: 1, name: "🔥 黄果AI短剧 🔥", url: "https://d3g7538xrewa51.cloudfront.net?dc=hgs004202", highlight: true },
+  { tier: 1, name: "🔥黄果漫剧🔥", url: "https://d2xunosqqsurps.cloudfront.net?dc=hgs004202", highlight: true },
+  { tier: 1, name: "各种十几岁妹子的违禁视频，推特都不能发", url: "https://5kx8c.com" },
+  { tier: 1, name: "想看人与🐶、小马拉大车的视频点这里", url: "https://3a5zh.com" },
+
+  // 次推（6个）
+  { tier: 2, name: "黄果漫剧", url: "https://d2xunosqqsurps.cloudfront.net?dc=hgs004202" },
+  { tier: 2, name: "另一版黄果", url: "https://3z9fk.com" },
+  { tier: 2, name: "91大神", url: "https://3f5rw.com" },
+  { tier: 2, name: "陈人快手", url: "https://5kx8c.com" },
+
+  // 其他（5个）
+  { tier: 3, name: "电报资源", url: "https://t.me/kuai?start=a_3YQ0IF7" },
+];
+
+function render() {
+  const main = document.getElementById("main");
+  const sub = document.getElementById("sub");
+  const other = document.getElementById("other");
+
+  products.forEach(p => {
+    if (p.tier === 1) {
+      const cls = p.highlight ? "main-btn highlight" : "main-btn bling";
+      main.innerHTML += `<a class="${cls}" href="${p.url}" target="_blank">${p.name}</a>`;
+    } else if (p.tier === 2) {
+      sub.innerHTML += `<a class="sub-btn bling" href="${p.url}" target="_blank">${p.name}</a>`;
+    } else {
+      other.innerHTML += `<a class="other-btn bling" href="${p.url}" target="_blank">${p.name}</a>`;
+    }
+  });
+}
+render();
+</script>
+</body>
 </html>
